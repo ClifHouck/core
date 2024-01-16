@@ -148,6 +148,10 @@ class Metrics {
   // if a UUID is found, return false if a UUID cannot be returned.
   static bool UUIDForCudaDevice(int cuda_device, std::string* uuid);
 
+  // Get the name for a CUDA device. Return true and initialize 'name'
+  // if a name is found, return false if a name cannot be returned.
+  static bool NameForCudaDevice(int cuda_device, std::string* uuid);
+
   // Metric family counting successful inference requests
   static prometheus::Family<prometheus::Counter>& FamilyInferenceSuccess()
   {

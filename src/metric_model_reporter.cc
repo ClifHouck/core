@@ -311,6 +311,15 @@ MetricModelReporter::GetMetricLabels(
       labels->insert(std::map<std::string, std::string>::value_type(
           std::string(kMetricsLabelGpuUuid), uuid));
     }
+
+    std::string name;
+    if (Metrics::NameForCudaDevice(device, &name)) {
+      labels->insert(std::map<std::string, std::string>::value_type(
+          std::string(kMetricsLabelGpuName), name));
+    }
+
+    labels->insert(std::map<std::string, std::string>value_type(
+        std::string(kMetricsLabelGpuDeviceNumber), std::to_string(device)));
   }
 }
 

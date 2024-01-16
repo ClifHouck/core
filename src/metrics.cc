@@ -1021,6 +1021,38 @@ Metrics::UUIDForCudaDevice(int cuda_device, std::string* uuid)
 #endif  // TRITON_ENABLE_METRICS_GPU
 }
 
+bool
+Metrics::NameForCudaDevice(int cuda_device, std::string* uuid)
+{
+  // If metrics were not initialized then just silently fail since
+  // with DCGM we can't get the CUDA device (and not worth doing
+  // anyway since metrics aren't being reported).
+  auto singleton = GetSingleton();
+  if (!singleton->gpu_metrics_enabled_) {
+    return false;
+  }
+
+  // If GPU metrics is not enabled just silently fail.
+#ifndef TRITON_ENABLE_METRICS_GPU
+  return false;
+#else
+
+  dcgmDeviceAttributes_t gpu_attributes;
+  gpu_attributes.version = dcgmDeviceAttributes_version;
+  dcgmReturn_t dcgmerr = dcgmGetDeviceAttributes(
+      singleton->dcgm_metadata_.dcgm_handle_, cuda_device, &gpu_attributes);
+  if (dcgmerr != DCGM_ST_OK) {
+    LOG_ERROR << "Unable to get device UUID: " << errorString(dcgmerr);
+    return false;
+  }
+
+  *uuid = gpu_attributes.identifiers.name;
+  return true;
+#endif  // TRITON_ENABLE_METRICS_GPU
+}
+
+
+
 std::shared_ptr<prometheus::Registry>
 Metrics::GetRegistry()
 {
