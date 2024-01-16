@@ -318,7 +318,7 @@ MetricModelReporter::GetMetricLabels(
           std::string(kMetricsLabelGpuName), name));
     }
 
-    labels->insert(std::map<std::string, std::string>value_type(
+    labels->insert(std::map<std::string, std::string>::value_type(
         std::string(kMetricsLabelGpuDeviceNumber), std::to_string(device)));
   }
 }
