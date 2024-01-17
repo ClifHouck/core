@@ -1046,7 +1046,7 @@ Metrics::NameForCudaDevice(int cuda_device, std::string* uuid)
     return false;
   }
 
-  *uuid = gpu_attributes.identifiers.name;
+  *uuid = gpu_attributes.identifiers.deviceName;
   return true;
 #endif  // TRITON_ENABLE_METRICS_GPU
 }
