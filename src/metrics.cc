@@ -852,6 +852,11 @@ Metrics::InitializeDcgmMetrics()
       gpu_labels.insert(std::map<std::string, std::string>::value_type(
           kMetricsLabelGpuName,
           std::string(gpu_attributes[i].identifiers.deviceName)));
+      gpu_labels.insert(std::map<std::string, std::string>::value_type(
+          kMetricsLabelGpuDeviceNumber,
+          std::string(dcgm_gpu_ids[i])));
+
+
 
       pci_bus_id_to_gpu_labels[pciBusId] = gpu_labels;
     }
@@ -1026,7 +1031,7 @@ Metrics::UUIDForCudaDevice(int cuda_device, std::string* uuid)
 }
 
 bool
-Metrics::NameForCudaDevice(int cuda_device, std::string* uuid)
+Metrics::NameForCudaDevice(int cuda_device, std::string* name)
 {
   // If metrics were not initialized then just silently fail since
   // with DCGM we can't get the CUDA device (and not worth doing
@@ -1046,11 +1051,11 @@ Metrics::NameForCudaDevice(int cuda_device, std::string* uuid)
   dcgmReturn_t dcgmerr = dcgmGetDeviceAttributes(
       singleton->dcgm_metadata_.dcgm_handle_, cuda_device, &gpu_attributes);
   if (dcgmerr != DCGM_ST_OK) {
-    LOG_ERROR << "Unable to get device UUID: " << errorString(dcgmerr);
+    LOG_ERROR << "Unable to get device name: " << errorString(dcgmerr);
     return false;
   }
 
-  *uuid = gpu_attributes.identifiers.deviceName;
+  *name = gpu_attributes.identifiers.deviceName;
   return true;
 #endif  // TRITON_ENABLE_METRICS_GPU
 }
