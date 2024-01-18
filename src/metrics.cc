@@ -849,6 +849,10 @@ Metrics::InitializeDcgmMetrics()
       gpu_labels.insert(std::map<std::string, std::string>::value_type(
           kMetricsLabelGpuUuid,
           std::string(gpu_attributes[i].identifiers.uuid)));
+      gpu_labels.insert(std::map<std::string, std::string>::value_type(
+          kMetricsLabelGpuName,
+          std::string(gpu_attributes[i].identifiers.deviceName)));
+
       pci_bus_id_to_gpu_labels[pciBusId] = gpu_labels;
     }
   }
