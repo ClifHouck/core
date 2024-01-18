@@ -854,7 +854,7 @@ Metrics::InitializeDcgmMetrics()
           std::string(gpu_attributes[i].identifiers.deviceName)));
       gpu_labels.insert(std::map<std::string, std::string>::value_type(
           kMetricsLabelGpuDeviceNumber,
-          std::string(dcgm_gpu_ids[i])));
+          std::string(std::to_string(dcgm_gpu_ids[i]))));
 
 
 
