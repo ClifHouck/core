@@ -1039,11 +1039,13 @@ Metrics::NameForCudaDevice(int cuda_device, std::string* name)
   // anyway since metrics aren't being reported).
   auto singleton = GetSingleton();
   if (!singleton->gpu_metrics_enabled_) {
+    LOG_INFO << "Singleton GPU metrics not enabled!";
     return false;
   }
 
   // If GPU metrics is not enabled just silently fail.
 #ifndef TRITON_ENABLE_METRICS_GPU
+  LOG_INFO << "Compiler GPU metrics not enabled!";
   return false;
 #else
 
@@ -1057,6 +1059,7 @@ Metrics::NameForCudaDevice(int cuda_device, std::string* name)
   }
 
   *name = gpu_attributes.identifiers.deviceName;
+  LOG_INFO << "Got name: " << name;
   return true;
 #endif  // TRITON_ENABLE_METRICS_GPU
 }
