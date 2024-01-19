@@ -341,6 +341,7 @@ Metrics::EnableGPUMetrics()
   }
 
   singleton->gpu_metrics_enabled_ = true;
+  LOG_INFO << "gpu metrics enabled!";
 }
 
 void
