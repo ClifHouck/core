@@ -294,6 +294,7 @@ MetricModelReporter::GetMetricLabels(
     const int64_t model_version, const int device,
     const triton::common::MetricTagsMap& model_tags)
 {
+  LOG_INFO << "GetMetricsLabels Called!";
   labels->insert(std::map<std::string, std::string>::value_type(
       std::string(kMetricsLabelModelName), model_name));
   labels->insert(std::map<std::string, std::string>::value_type(
@@ -306,14 +307,17 @@ MetricModelReporter::GetMetricLabels(
   // 'device' can be < 0 to indicate that the GPU is not known. In
   // that case use a metric that doesn't have the gpu_uuid label.
   if (device >= 0) {
+    LOG_INFO << "GetMetricsLabels device is greater than or equal to 0";
     std::string uuid;
     if (Metrics::UUIDForCudaDevice(device, &uuid)) {
+      LOG_INFO << "GetMetricsLabels UUIDForCudaDevice returned true!";
       labels->insert(std::map<std::string, std::string>::value_type(
           std::string(kMetricsLabelGpuUuid), uuid));
     }
 
     std::string name;
     if (Metrics::NameForCudaDevice(device, &name)) {
+      LOG_INFO << "GetMetricsLabels NameForCudaDevice returned true!";
       labels->insert(std::map<std::string, std::string>::value_type(
           std::string(kMetricsLabelGpuName), name));
     }
@@ -321,6 +325,8 @@ MetricModelReporter::GetMetricLabels(
     labels->insert(std::map<std::string, std::string>::value_type(
         std::string(kMetricsLabelGpuDeviceNumber), std::to_string(device)));
   }
+
+  LOG_INFO << "GetMetricsLabels End.";
 }
 
 template <typename T, typename... Args>
